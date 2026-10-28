@@ -27,7 +27,8 @@ Players take turns filling up the board by dropping pieces into the lowest row. 
 - **Libraries:** I will use IO.readln to read input, IO.println to write output, Integer.parseInt to convert Strings to numbers, and .equals to compare pieces. I will use IntelliJ to write and run the code. This project does not need to pull any data from the internet, and it runs in the terminal. The board is stored in a 6 by 7 String array, and the win counts are stored as ints.
 
 ## Setup
-
+This game requires **Java JDK 25 or newer** (the code uses `void main()` and the `IO` class).
+Check your version with `java --version`. Download it from https://adoptium.net if needed.
 ```bash
 git clone https://github.com/tejasraj03262/Connect-Four
 cd Connect-Four
