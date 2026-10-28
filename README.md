@@ -17,9 +17,9 @@ Players take turns filling up the board by dropping pieces into the lowest row. 
 - Show the score for each player.
 - Play again option.
 
-![System diagram](docs/SystemDiagram.png)
+![System diagram](git add README.mdSystemDiagram.png)
 
-[Eisenhower Matrix](docs/EisenhowerMatrix.pdf)
+[Eisenhower Matrix](EisenhowerMatrix.pdf)
 
 ## Tech Stack
 
