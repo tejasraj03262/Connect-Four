@@ -8,7 +8,7 @@ My friends and I play Connect Four a lot, and we constantly argue about who is b
 
 ## How It Works
 
-Players take turns filling up the board by dropping pieces into the lowest row. After every move, the program checks for four in a row. This can be done horizontally, vertically or even diagonally. It can also declare a draw if the game board is full.
+Players take turns filling up the board by dropping pieces into the lowest empty row. After every move, the program checks for four in a row, which can be horizontal, vertical, or diagonal. It can also declare a draw if the board is full. After each game, it displays each player’s number of wins and asks if they want to keep playing.
 
 **Features of the MVP**
 - Two-player game with the ability to identify winners.
