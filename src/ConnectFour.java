@@ -38,27 +38,27 @@ void main() {
     } else {
         symbol = "O";
 
-
-        // We keep asking the user until the column is valid. We do this
-        // ...so an invalid column like a column
-        // We always start the col at -1, so that the while loop always runs at least once.
-        int col = -1;
-        // parseInt throws an exception on any letters or empty input, so we catch it later.
-        // We do this so that the games does not throw an exception and crash the game.
-        // We keep asking until we get a valid column.
-        while (!isValidColPick(board, col)) {
-            try {
-                col = Integer.parseInt(IO.readln("Player " + currentPlayer + " (" + symbol + ") " + "- Choose a column:\n"));
-                if (!isValidColPick(board, col)) {
-
-                    IO.println("Invalid Column");
-                }
-            } catch (NumberFormatException e) {
-                IO.println("That is not a number");
-            }
-        }
-
     }
+    // We keep asking the user until the column is valid. We do this
+    // ...so an invalid column like a column
+    // We always start the col at -1, so that the while loop always runs at least once.
+    int col = -1;
+    // parseInt throws an exception on any letters or empty input, so we catch it later.
+    // We do this so that the games does not throw an exception and crash the game.
+    // We keep asking until we get a valid column.
+    while (!isValidColPick(board, col)) {
+        try {
+            col = Integer.parseInt(IO.readln("Player " + currentPlayer + " (" + symbol + ") " + "- Choose a column:\n"));
+            if (!isValidColPick(board, col)) {
+
+                IO.println("Invalid Column");
+            }
+        } catch (NumberFormatException e) {
+            IO.println("That is not a number");
+        }
+    }
+
+
 }
 
 /**
@@ -99,6 +99,7 @@ void printTheBoard(String[][] board) {
  * It makes sure to check if a column is between 1 and 7 and cannot be full.
  * This mirrors a real life Connect Four game as it has to be between column 1 and 7,
  * you cannot add a piece on an already full column.
+ *
  * @param board, the 6 by 7 2D Array, which holds the game board.
  * @param c,     the column the player choose.
  * @return true if the column picked is valid, and false if not.
