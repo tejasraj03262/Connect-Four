@@ -29,22 +29,23 @@ void main() {
     int currentPlayer = player1;
 
     String symbol;
+    while (true) {
 
+        //Player 1 is always X and player 2 is always O
+        // Depending on who the current player is we can change symbol to later drop the piece in the board.
+        if (currentPlayer == 1) {
+            symbol = "X";
+        } else {
+            symbol = "O";
 
-    //Player 1 is always X and player 2 is always O
-    // Depending on who the current player is we can change symbol to later drop the piece in the board.
-    if (currentPlayer == 1) {
-        symbol = "X";
-    } else {
-        symbol = "O";
-
+        }
     }
     // We keep asking the user until the column is valid. We do this
-    // ...so an invalid column like a column
+    // so an invalid column never gets placed on the board.
     // We always start the col at -1, so that the while loop always runs at least once.
     int col = -1;
     // parseInt throws an exception on any letters or empty input, so we catch it later.
-    // We do this so that the games does not throw an exception and crash the game.
+    // We do this so that the game does not throw an exception and crash the game.
     // We keep asking until we get a valid column.
     while (!isValidColPick(board, col)) {
         try {
