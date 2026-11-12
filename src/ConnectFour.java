@@ -39,27 +39,30 @@ void main() {
             symbol = "O";
 
         }
-    }
-    // We keep asking the user until the column is valid. We do this
-    // so an invalid column never gets placed on the board.
-    // We always start the col at -1, so that the while loop always runs at least once.
-    int col = -1;
-    // parseInt throws an exception on any letters or empty input, so we catch it later.
-    // We do this so that the game does not throw an exception and crash the game.
-    // We keep asking until we get a valid column.
-    while (!isValidColPick(board, col)) {
-        try {
-            col = Integer.parseInt(IO.readln("Player " + currentPlayer + " (" + symbol + ") " + "- Choose a column:\n"));
-            if (!isValidColPick(board, col)) {
 
-                IO.println("Invalid Column");
+        // We keep asking the user until the column is valid. We do this
+        // so an invalid column never gets placed on the board.
+        // We always start the col at -1, so that the while loop always runs at least once.
+        int col = -1;
+        // parseInt throws an exception on any letters or empty input, so we catch it later.
+        // We do this so that the game does not throw an exception and crash the game.
+        // We keep asking until we get a valid column.
+        while (!isValidColPick(board, col)) {
+            try {
+                col = Integer.parseInt(IO.readln("Player " + currentPlayer + " (" + symbol + ") " + "- Choose a column:\n"));
+                if (!isValidColPick(board, col)) {
+
+                    IO.println("Invalid Column");
+                }
+            } catch (NumberFormatException e) {
+                IO.println("That is not a number");
             }
-        } catch (NumberFormatException e) {
-            IO.println("That is not a number");
         }
+        // We made sure to check that the column is a valid piece, so now we can drop the piece into the board and then print it.
+        whichRow(board, col, symbol);
+        printTheBoard(board);
+
     }
-
-
 }
 
 /**
@@ -114,4 +117,24 @@ boolean isValidColPick(String[][] board, int c) {
     // bottom to top. Essentially if the top spot is empty, we can still insert a piece in the column.
     return board[0][c - 1].equals(".");
 
+}
+/**
+ * This method drops the piece into the column the player choose.
+ * It moves down until the spot below is taken.
+ * @param board, the 6 by 7 2D Array, which holds the game board.
+ * @param c the column the player choose.
+ * @return the row in which the piece landed.
+ */
+
+int whichRow(String[][] board, int c, String symbol) {
+    int row = 0;
+    // Players type numbers from 1-7 but indexes are 0-6, so we have to subtract 1.
+    int col = c - 1;
+    // We start at the top and move all the way down until the next spot is taken.
+    // We do row<5 since our check is row+1. This code mimics a real piece falling.
+    while (row < 5 && !(board[row + 1][col].equals("X") || board[row + 1][col].equals("O"))) {
+        row++;
+    }
+    board[row][col] = symbol;
+    return row;
 }
