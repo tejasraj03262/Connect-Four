@@ -29,7 +29,7 @@ void main() {
     int currentPlayer = player1;
 
     String symbol;
-    // The game will keep going, until someone wins.
+    // The game will keep going, until someone wins or the board is full.
     while (true) {
 
         //Player 1 is always X and player 2 is always O
@@ -66,6 +66,9 @@ void main() {
         // We check for a win before we switch players, so that we can declare the current player as the winner.
         if (checkWin(board)) {
             IO.println("Player " + currentPlayer + " Wins!");
+            return;
+        } else if (isBoardFull(board)) {
+            IO.println("Game Ends in a Draw!");
             return;
         }
         // After every turn the current player switches like a real game.
@@ -233,3 +236,34 @@ boolean checkWin(String[][] board) {
 
 
 }
+/**
+ * This checks if every spot on the board is filled with the symbols or not.
+ * This function is used to tell if there is a draw or not.
+ * @param board, the 6 by 7 2D Array, which holds the game board.
+ * @return true if there is no empty spots left on the board, if not return false.
+ */
+boolean isBoardFull(String[][] board) {
+
+    int count = 0;
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 7; j++) {
+            if (board[i][j].equals(".")) {
+                count++;
+                // We only need one empty spot in a row to know the board isn't full, so we break out of that row and move to the next one.
+                // If there is an empty spot we add one to count.
+                break;
+            }
+        }
+
+    }
+    // If there is no empty spot (count is 0), then board is full and we return true. If there is an empty spot, the board is not full, so we return false.
+    if (count == 0) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
+
