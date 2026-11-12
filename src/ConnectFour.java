@@ -29,6 +29,7 @@ void main() {
     int currentPlayer = player1;
 
     String symbol;
+    // The game will keep going forever, until someone wins, which I will create in the next commit.
     while (true) {
 
         //Player 1 is always X and player 2 is always O
@@ -61,6 +62,13 @@ void main() {
         // We made sure to check that the column is a valid piece, so now we can drop the piece into the board and then print it.
         whichRow(board, col, symbol);
         printTheBoard(board);
+        // After every turn the current player switches like a real game.
+        if (currentPlayer == player1) {
+            currentPlayer = player2;
+        } else {
+            currentPlayer = player1;
+        }
+
 
     }
 }
