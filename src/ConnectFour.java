@@ -29,7 +29,7 @@ void main() {
     int currentPlayer = player1;
 
     String symbol;
-    // The game will keep going forever, until someone wins, which I will create in the next commit.
+    // The game will keep going, until someone wins.
     while (true) {
 
         //Player 1 is always X and player 2 is always O
@@ -59,9 +59,15 @@ void main() {
                 IO.println("That is not a number");
             }
         }
-        // We made sure to check that the column is a valid piece, so now we can drop the piece into the board and then print it.
+        // We made sure to check that the column is valid, so now we can drop the piece into the board and then print it.
         whichRow(board, col, symbol);
         printTheBoard(board);
+
+        // We check for a win before we switch players, so that we can declare the current player as the winner.
+        if (checkWin(board)) {
+            IO.println("Player " + currentPlayer + " Wins!");
+            return;
+        }
         // After every turn the current player switches like a real game.
         if (currentPlayer == player1) {
             currentPlayer = player2;
@@ -126,11 +132,13 @@ boolean isValidColPick(String[][] board, int c) {
     return board[0][c - 1].equals(".");
 
 }
+
 /**
  * This method drops the piece into the column the player choose.
  * It moves down until the spot below is taken.
+ *
  * @param board, the 6 by 7 2D Array, which holds the game board.
- * @param c the column the player choose.
+ * @param c      the column the player choose.
  * @return the row in which the piece landed.
  */
 
@@ -145,4 +153,83 @@ int whichRow(String[][] board, int c, String symbol) {
     }
     board[row][col] = symbol;
     return row;
+}
+
+/**
+ * This checks the board for a ConnectFour or four pieces of the same symbol.
+ * It checks the horizontal, vertical and diagonal direction to check for a win.
+ *
+ * @param board, the 6 by 7 2D Array, which holds the game board.
+ * @return true if the game has a symbol four in a row, false if not.
+ */
+
+boolean checkWin(String[][] board) {
+
+    for (int i = 0; i < 6; i++) {
+        // This is the horizontal check. j only goes to 3 because the check uses j + 3, and we have to stay inside the 7 columns.
+        // We check each row if 4 pieces in a row are the same symbol. If not, we move on to the next row.
+        for (int j = 0; j < 4; j++) {
+            if (board[i][j].equals("X") && board[i][j + 1].equals("X")
+                    && board[i][j + 2].equals("X") && board[i][j + 3].equals("X")) {
+                return true;
+            } else if (board[i][j].equals("O") && board[i][j + 1].equals("O")
+                    && board[i][j + 2].equals("O") && board[i][j + 3].equals("O")) {
+                return true;
+            }
+
+
+        }
+    }
+
+    for (int i = 0; i < 7; i++) {
+        // This is the Vertical check. j only goes to 2 because the check uses j + 3, and we have to stay inside the 6 rows.
+        // We check each column if 4 pieces in a row are the same symbol. If not, we move on to the next column.
+        for (int j = 0; j < 3; j++) {
+            if (board[j][i].equals("X") && board[j + 1][i].equals("X")
+                    && board[j + 2][i].equals("X") && board[j + 3][i].equals("X")) {
+                return true;
+            } else if (board[j][i].equals("O") && board[j + 1][i].equals("O")
+                    && board[j + 2][i].equals("O") && board[j + 3][i].equals("O")) {
+                return true;
+            }
+
+
+        }
+    }
+    for (int i = 0; i < 3; i++) {
+        // This is the diagonal piece going down-right. Both the row and column go up by 1 each step.
+        // We stop i before 3 and j before 4 because our checks are i+3 and j+3, and so that we don't go over the board.
+        // We check each row and column to see if 4 pieces in a row are the same symbol. If not, we move on to the next row and column or diagonal.
+        for (int j = 0; j < 4; j++) {
+            if (board[i][j].equals("X") && board[i + 1][j + 1].equals("X")
+                    && board[i + 2][j + 2].equals("X") && board[i + 3][j + 3].equals("X")) {
+                return true;
+            } else if (board[i][j].equals("O") && board[i + 1][j + 1].equals("O")
+                    && board[i + 2][j + 2].equals("O") && board[i + 3][j + 3].equals("O")) {
+                return true;
+            }
+
+
+        }
+    }
+
+    for (int i = 0; i < 3; i++) {
+        // This is the diagonal check going down-left. j starts at 6 because the direction of the check moves left as we go down.
+// We stop i before 3 and j at 3 because our checks are i+3 and j-3, and so that we don't go over the board.
+// We check each row and column to see if 4 pieces in a row are the same symbol. If not, we move on to the next row and column or diagonal.
+        for (int j = 6; j > 2; j--) {
+            if (board[i][j].equals("X") && board[i + 1][j - 1].equals("X")
+                    && board[i + 2][j - 2].equals("X") && board[i + 3][j - 3].equals("X")) {
+                return true;
+            } else if (board[i][j].equals("O") && board[i + 1][j - 1].equals("O")
+                    && board[i + 2][j - 2].equals("O") && board[i + 3][j - 3].equals("O")) {
+                return true;
+            }
+
+
+        }
+    }
+    return false;
+
+
 }
