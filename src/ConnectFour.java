@@ -14,72 +14,90 @@
  */
 void main() {
     IO.println("Welcome to Connect Four!");
-    // We use 6 rows and 7 columns to match a real Connect Four board.
-    String[][] board = new String[6][7];
-    // We use "." to mark an empty spot before any piece has been dropped.
-    for (int i = 0; i < board.length; i++) {
-        for (int j = 0; j < board[i].length; j++) {
-            board[i][j] = ".";
-        }
-    }
-    printTheBoard(board);
+
+
     int player1 = 1;
     int player2 = 2;
 
-    int currentPlayer = player1;
-
-    String symbol;
-    // The game will keep going, until someone wins or the board is full.
+    // The outer loop represents one full game each time.
+    // The game will keep going until the players say they do not want to play again.
     while (true) {
-
-        //Player 1 is always X and player 2 is always O
-        // Depending on who the current player is we can change symbol to later drop the piece in the board.
-        if (currentPlayer == 1) {
-            symbol = "X";
-        } else {
-            symbol = "O";
-
-        }
-
-        // We keep asking the user until the column is valid. We do this
-        // so an invalid column never gets placed on the board.
-        // We always start the col at -1, so that the while loop always runs at least once.
-        int col = -1;
-        // parseInt throws an exception on any letters or empty input, so we catch it later.
-        // We do this so that the game does not throw an exception and crash the game.
-        // We keep asking until we get a valid column.
-        while (!isValidColPick(board, col)) {
-            try {
-                col = Integer.parseInt(IO.readln("Player " + currentPlayer + " (" + symbol + ") " + "- Choose a column:\n"));
-                if (!isValidColPick(board, col)) {
-
-                    IO.println("Invalid Column");
-                }
-            } catch (NumberFormatException e) {
-                IO.println("That is not a number");
+        // We use 6 rows and 7 columns to match a real Connect Four board.
+        String[][] board = new String[6][7];
+        // We create the board here so that it becomes empty at the very start at every game.
+        // We use "." to mark an empty spot before any piece has been dropped.
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                board[i][j] = ".";
             }
         }
-        // We made sure to check that the column is valid, so now we can drop the piece into the board and then print it.
-        whichRow(board, col, symbol);
         printTheBoard(board);
+        // We reset the current player here so that the Player 1 always starts each game.
+        int currentPlayer = player1;
 
-        // We check for a win before we switch players, so that we can declare the current player as the winner.
-        if (checkWin(board)) {
-            IO.println("Player " + currentPlayer + " Wins!");
-            return;
-        } else if (isBoardFull(board)) {
-            IO.println("Game Ends in a Draw!");
-            return;
+
+        String symbol;
+        // The inner loop represents one turn at a time. It will keep going until someone wins or when the board is full.
+        while(true) {
+            //Player 1 is always X and player 2 is always O
+            // Depending on who the current player is we can change symbol to later drop the piece in the board.
+            if (currentPlayer == 1) {
+                symbol = "X";
+            } else {
+                symbol = "O";
+
+            }
+
+            // We keep asking the user until the column is valid. We do this
+            // so an invalid column never gets placed on the board.
+            // We always start the col at -1, so that the while loop always runs at least once.
+            int col = -1;
+            // parseInt throws an exception on any letters or empty input, so we catch it later.
+            // We do this so that the game does not throw an exception and crash the game.
+            // We keep asking until we get a valid column.
+            while (!isValidColPick(board, col)) {
+                try {
+                    col = Integer.parseInt(IO.readln("Player " + currentPlayer + " (" + symbol + ") " + "- Choose a column:\n"));
+                    if (!isValidColPick(board, col)) {
+
+                        IO.println("Invalid Column");
+                    }
+                } catch (NumberFormatException e) {
+                    IO.println("That is not a number");
+                }
+            }
+            // We made sure to check that the column is valid, so now we can drop the piece into the board and then print it.
+            whichRow(board, col, symbol);
+            printTheBoard(board);
+
+            // We check for a win before we switch players, so that we can declare the current player as the winner.
+            // We use breaks and not return because putting a return will end the whole program.
+            // A break will only leave the inner loop so we can still keep playing.
+            if (checkWin(board)) {
+                IO.println("Player " + currentPlayer + " Wins!");
+                break;
+            } else if (isBoardFull(board)) {
+                IO.println("Game Ends in a Draw!");
+                break;
+            }
+            // After every turn the current player switches like a real game.
+            if (currentPlayer == player1) {
+                currentPlayer = player2;
+            } else {
+                currentPlayer = player1;
+            }
         }
-        // After every turn the current player switches like a real game.
-        if (currentPlayer == player1) {
-            currentPlayer = player2;
-        } else {
-            currentPlayer = player1;
+
+
+
+        // The game is over, so we ask if they want to play again.
+        // Anything other than "y" case ignored ends thr program.
+        String answer = IO.readln("Play again? (y/n)\n");
+        if(!answer.equalsIgnoreCase("y")){
+            break;
         }
-
-
     }
+    IO.println("Thanks for playing!");
 }
 
 /**
@@ -248,9 +266,10 @@ boolean isBoardFull(String[][] board) {
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 7; j++) {
             if (board[i][j].equals(".")) {
+                // If there is an empty spot we add one to count.
                 count++;
                 // We only need one empty spot in a row to know the board isn't full, so we break out of that row and move to the next one.
-                // If there is an empty spot we add one to count.
+
                 break;
             }
         }
