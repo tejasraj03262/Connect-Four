@@ -18,13 +18,18 @@ void main() {
 
     int player1 = 1;
     int player2 = 2;
+    // We create the win counters before the loops so that they do not reset after every game to 0.
+    // This is so that the score gets carried over between games.
+    int player1Wins = 0;
+    int player2Wins = 0;
+
 
     // The outer loop represents one full game each time.
     // The game will keep going until the players say they do not want to play again.
     while (true) {
         // We use 6 rows and 7 columns to match a real Connect Four board.
         String[][] board = new String[6][7];
-        // We create the board here so that it becomes empty at the very start at every game.
+        // We create the board here so that it becomes empty at the very start of every game.
         // We use "." to mark an empty spot before any piece has been dropped.
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
@@ -32,7 +37,7 @@ void main() {
             }
         }
         printTheBoard(board);
-        // We reset the current player here so that the Player 1 always starts each game.
+        // We reset the current player here so that Player 1 always starts each game.
         int currentPlayer = player1;
 
 
@@ -75,6 +80,13 @@ void main() {
             // A break will only leave the inner loop so we can still keep playing.
             if (checkWin(board)) {
                 IO.println("Player " + currentPlayer + " Wins!");
+                // We add 1 to whoever just won. Since we did not switch yet, current player is still the winner.
+                if(currentPlayer == player1){
+                    player1Wins++;
+                }
+                else{
+                    player2Wins++;
+                }
                 break;
             } else if (isBoardFull(board)) {
                 IO.println("Game Ends in a Draw!");
@@ -88,10 +100,10 @@ void main() {
             }
         }
 
-
-
+        // We show the score after every game, no matter what the result was.
+        IO.println("Score - Player 1: " + player1Wins + " | Player 2: " + player2Wins);
         // The game is over, so we ask if they want to play again.
-        // Anything other than "y" case ignored ends thr program.
+        // Anything other than "y" or "Y" ends the program.
         String answer = IO.readln("Play again? (y/n)\n");
         if(!answer.equalsIgnoreCase("y")){
             break;
@@ -140,7 +152,7 @@ void printTheBoard(String[][] board) {
  * you cannot add a piece on an already full column.
  *
  * @param board, the 6 by 7 2D Array, which holds the game board.
- * @param c,     the column the player choose.
+ * @param c,     the column the player chose.
  * @return true if the column picked is valid, and false if not.
  */
 boolean isValidColPick(String[][] board, int c) {
@@ -155,11 +167,11 @@ boolean isValidColPick(String[][] board, int c) {
 }
 
 /**
- * This method drops the piece into the column the player choose.
+ * This method drops the piece into the column the player chose.
  * It moves down until the spot below is taken.
  *
  * @param board, the 6 by 7 2D Array, which holds the game board.
- * @param c      the column the player choose.
+ * @param c      the column the player chose.
  * @return the row in which the piece landed.
  */
 
@@ -177,7 +189,7 @@ int whichRow(String[][] board, int c, String symbol) {
 }
 
 /**
- * This checks the board for a ConnectFour or four pieces of the same symbol.
+ * This checks the board for a Connect Four or four pieces of the same symbol.
  * It checks the horizontal, vertical and diagonal direction to check for a win.
  *
  * @param board, the 6 by 7 2D Array, which holds the game board.
@@ -218,7 +230,7 @@ boolean checkWin(String[][] board) {
         }
     }
     for (int i = 0; i < 3; i++) {
-        // This is the diagonal piece going down-right. Both the row and column go up by 1 each step.
+        // This is the diagonal check going down-right. Both the row and column go up by 1 each step.
         // We stop i before 3 and j before 4 because our checks are i+3 and j+3, and so that we don't go over the board.
         // We check each row and column to see if 4 pieces in a row are the same symbol. If not, we move on to the next row and column or diagonal.
         for (int j = 0; j < 4; j++) {
@@ -258,7 +270,7 @@ boolean checkWin(String[][] board) {
  * This checks if every spot on the board is filled with the symbols or not.
  * This function is used to tell if there is a draw or not.
  * @param board, the 6 by 7 2D Array, which holds the game board.
- * @return true if there is no empty spots left on the board, if not return false.
+ * @return true if there are no empty spots left on the board, if not return false.
  */
 boolean isBoardFull(String[][] board) {
 
