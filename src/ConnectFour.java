@@ -33,6 +33,7 @@ void main() {
         player2Name = "Player 2";
     }
 
+
     // The outer loop represents one full game each time.
     // The game will keep going until the players say they do not want to play again.
     while (true) {
@@ -75,7 +76,15 @@ void main() {
             // We keep asking until we get a valid column.
             while (!isValidColPick(board, col)) {
                 try {
-                    col = Integer.parseInt(IO.readln(currentName + " (" + symbol + ") " + "- Choose a column:\n"));
+                    String input = IO.readln(currentName + " (" + symbol + ") - Choose a column (or q to quit):\n");
+                    // We check for "q" before parseInt, because parseInt would treat "q" as a non-number and print the wrong message.
+                    if (input.equalsIgnoreCase("q")) {
+                        IO.println("Score - " + player1Name + ": " + player1Wins + " | " + player2Name + ": " + player2Wins);
+                        IO.println("Thanks for playing!");
+                        // We use return and not break because a break would only leave the column input loop. A return would end the entire game.
+                        return;
+                    }
+                    col = Integer.parseInt(input);
                     if (!isValidColPick(board, col)) {
 
                         IO.println("Invalid Column");
