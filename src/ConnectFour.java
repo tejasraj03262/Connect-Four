@@ -22,7 +22,16 @@ void main() {
     // This is so that the score gets carried over between games.
     int player1Wins = 0;
     int player2Wins = 0;
-
+    //We ask for the players name once, before the game starts, so that they are the same the entire game.
+    // If someone just presses enter for their name or only spaces, we use "Player 1" or "Player 2"  as their names, so they are never empty.
+    String player1Name = IO.readln("Player 1 (X), enter your name:\n");
+    if (player1Name.isBlank()) {
+        player1Name = "Player 1";
+    }
+    String player2Name = IO.readln("Player 2 (O), enter your name:\n");
+    if (player2Name.isBlank()) {
+        player2Name = "Player 2";
+    }
 
     // The outer loop represents one full game each time.
     // The game will keep going until the players say they do not want to play again.
@@ -42,14 +51,18 @@ void main() {
 
 
         String symbol;
+        String currentName;
         // The inner loop represents one turn at a time. It will keep going until someone wins or when the board is full.
-        while(true) {
+        while (true) {
             //Player 1 is always X and player 2 is always O
             // Depending on who the current player is we can change symbol to later drop the piece in the board.
+            // We also set the current player's name, since it changes with symbol.
             if (currentPlayer == 1) {
                 symbol = "X";
+                currentName = player1Name;
             } else {
                 symbol = "O";
+                currentName = player2Name;
 
             }
 
@@ -62,7 +75,7 @@ void main() {
             // We keep asking until we get a valid column.
             while (!isValidColPick(board, col)) {
                 try {
-                    col = Integer.parseInt(IO.readln("Player " + currentPlayer + " (" + symbol + ") " + "- Choose a column:\n"));
+                    col = Integer.parseInt(IO.readln(currentName + " (" + symbol + ") " + "- Choose a column:\n"));
                     if (!isValidColPick(board, col)) {
 
                         IO.println("Invalid Column");
@@ -79,12 +92,11 @@ void main() {
             // We use breaks and not return because putting a return will end the whole program.
             // A break will only leave the inner loop so we can still keep playing.
             if (checkWin(board)) {
-                IO.println("Player " + currentPlayer + " Wins!");
+                IO.println(currentName + " Wins!");
                 // We add 1 to whoever just won. Since we did not switch yet, current player is still the winner.
-                if(currentPlayer == player1){
+                if (currentPlayer == player1) {
                     player1Wins++;
-                }
-                else{
+                } else {
                     player2Wins++;
                 }
                 break;
@@ -101,11 +113,11 @@ void main() {
         }
 
         // We show the score after every game, no matter what the result was.
-        IO.println("Score - Player 1: " + player1Wins + " | Player 2: " + player2Wins);
+        IO.println("Score - " + player1Name + ": " + player1Wins + " | " + player2Name + ": " + player2Wins);
         // The game is over, so we ask if they want to play again.
         // Anything other than "y" or "Y" ends the program.
         String answer = IO.readln("Play again? (y/n)\n");
-        if(!answer.equalsIgnoreCase("y")){
+        if (!answer.equalsIgnoreCase("y")) {
             break;
         }
     }
@@ -266,9 +278,11 @@ boolean checkWin(String[][] board) {
 
 
 }
+
 /**
  * This checks if every spot on the board is filled with the symbols or not.
  * This function is used to tell if there is a draw or not.
+ *
  * @param board, the 6 by 7 2D Array, which holds the game board.
  * @return true if there are no empty spots left on the board, if not return false.
  */
