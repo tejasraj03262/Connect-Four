@@ -115,7 +115,7 @@ Thanks for playing!
 
 ## Demo
 
-[Video walkthrough](PASTE-YOUR-VIDEO-LINK-HERE)
+[Video walkthrough](https://youtu.be/lxYTG1yBOI0)
 
 ## Author
 
